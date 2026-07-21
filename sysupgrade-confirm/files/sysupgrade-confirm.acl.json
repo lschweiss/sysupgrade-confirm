@@ -1,0 +1,15 @@
+{
+	"unauthenticated": {
+		"description": "sysupgrade-confirm: anonymous status + token-gated confirm (the token is single-use, generated at flash time, and expires with the confirm window)",
+		"read": {
+			"ubus": {
+				"sysupgrade-confirm": [ "status" ]
+			}
+		},
+		"write": {
+			"ubus": {
+				"sysupgrade-confirm": [ "confirm" ]
+			}
+		}
+	}
+}

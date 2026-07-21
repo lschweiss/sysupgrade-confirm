@@ -1,0 +1,6 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# owut pre-install hook: arm the confirm window before the flash.
+# Arm failure (unsupported board, unreadable boot env, unwritable state)
+# exits non-zero, which makes owut abort the flash — fail-safe by design.
+exec /usr/sbin/sysupgrade-confirm arm

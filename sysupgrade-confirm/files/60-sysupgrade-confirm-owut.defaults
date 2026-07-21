@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+# uci-defaults: point owut's pre_install hook at the run-parts dispatcher.
+# If an operator hook is already set, preserve it as the first entry in the
+# dispatcher's directory instead of clobbering it (extend, don't monopolize).
+existing=$(uci -q get attendedsysupgrade.owut.pre_install)
+if [ -n "$existing" ] && [ "$existing" != "/usr/libexec/owut-pre-install-dispatch" ]; then
+	mkdir -p /etc/owut.d/pre-install.d
+	ln -sf "$existing" /etc/owut.d/pre-install.d/10-preexisting
+fi
+uci -q get attendedsysupgrade.owut >/dev/null || uci set attendedsysupgrade.owut=owut
+uci set attendedsysupgrade.owut.pre_install='/usr/libexec/owut-pre-install-dispatch'
+uci commit attendedsysupgrade
+exit 0

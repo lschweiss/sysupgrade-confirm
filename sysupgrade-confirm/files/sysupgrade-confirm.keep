@@ -1,0 +1,16 @@
+# sysupgrade-confirm self-carrying restore list (/lib/upgrade/keep.d/).
+# Everything the daemon needs rides the sysupgrade config backup, and preinit
+# restores it before rc.d runs — so the revert guard exists on first boot even
+# when the flashed image is a vanilla build without the package. Only binary
+# dependency is fw_printenv/fw_setenv (uboot-envtools), present in Linksys MX
+# default images.
+/etc/config/sysupgrade-confirm
+/etc/sysupgrade-confirm
+/etc/init.d/sysupgrade-confirm
+/etc/rc.d/S15sysupgrade-confirm
+/etc/owut.d
+/usr/sbin/sysupgrade-confirm
+/usr/libexec/owut-pre-install-dispatch
+/usr/libexec/rpcd/sysupgrade-confirm
+/usr/share/rpcd/acl.d/sysupgrade-confirm.json
+/usr/share/sysupgrade-confirm

@@ -1,0 +1,17 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# run-parts dispatcher for owut's pre_install hook (uci
+# attendedsysupgrade.owut.pre_install). owut runs this after image
+# verification, immediately before flashing; ANY non-zero exit aborts the
+# flash. Drop executable hooks into /etc/owut.d/pre-install.d/ — they run in
+# lexical order, first failure wins. This lets sysupgrade-confirm's arming
+# hook compose with operator hooks instead of monopolizing the single uci slot.
+for f in /etc/owut.d/pre-install.d/*; do
+	[ -x "$f" ] || continue
+	"$f" || {
+		logger -t owut-pre-install "hook $f failed — aborting upgrade"
+		echo "owut-pre-install: hook $f failed — aborting upgrade" >&2
+		exit 1
+	}
+done
+exit 0

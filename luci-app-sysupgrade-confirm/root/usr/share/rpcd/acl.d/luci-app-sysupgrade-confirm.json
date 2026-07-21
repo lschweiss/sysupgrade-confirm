@@ -1,0 +1,15 @@
+{
+	"luci-app-sysupgrade-confirm": {
+		"description": "Grant access to the sysupgrade-confirm status page",
+		"read": {
+			"ubus": {
+				"sysupgrade-confirm": [ "status" ]
+			}
+		},
+		"write": {
+			"ubus": {
+				"sysupgrade-confirm": [ "confirm" ]
+			}
+		}
+	}
+}

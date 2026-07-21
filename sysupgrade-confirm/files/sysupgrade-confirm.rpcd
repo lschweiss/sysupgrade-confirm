@@ -1,0 +1,31 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-or-later
+# rpcd plugin: ubus object "sysupgrade-confirm" with exactly two methods.
+# Exposed to UNAUTHENTICATED callers by acl.d — status leaks only the pending
+# flag/timers, and confirm requires the single-use token generated at arm time
+# (the pre-flash browser page holds it in JS memory and auto-POSTs it when the
+# new firmware answers — a successful browser confirm IS the client-path
+# health check).
+
+case "$1" in
+list)
+	printf '{"status":{},"confirm":{"token":"str"}}\n'
+	;;
+call)
+	case "$2" in
+	status)
+		read -r _input
+		exec /usr/sbin/sysupgrade-confirm status --json
+		;;
+	confirm)
+		read -r input
+		token=$(printf '%s' "$input" | jsonfilter -e '@.token')
+		if /usr/sbin/sysupgrade-confirm _rpc_confirm "$token"; then
+			printf '{"confirmed":true}\n'
+		else
+			printf '{"confirmed":false}\n'
+		fi
+		;;
+	esac
+	;;
+esac

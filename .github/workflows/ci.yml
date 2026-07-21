@@ -1,0 +1,25 @@
+name: ci
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck (POSIX sh, busybox target)
+        run: |
+          sudo apt-get -qq install -y shellcheck
+          shellcheck -s sh \
+            sysupgrade-confirm/files/sysupgrade-confirm.sh \
+            sysupgrade-confirm/files/sysupgrade-confirm.rpcd \
+            sysupgrade-confirm/files/owut-pre-install-dispatch \
+            sysupgrade-confirm/files/50-sysupgrade-confirm.hook \
+            sysupgrade-confirm/files/60-sysupgrade-confirm-owut.defaults
+      - name: validate JSON (board tables, ACLs, menus)
+        run: |
+          find . -name '*.json' -print0 | xargs -0 -n1 python3 -m json.tool > /dev/null
+      - name: init script sanity
+        run: sh -n sysupgrade-confirm/files/sysupgrade-confirm.init

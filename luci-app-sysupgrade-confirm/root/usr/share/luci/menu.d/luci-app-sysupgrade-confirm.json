@@ -1,0 +1,13 @@
+{
+	"admin/system/sysupgrade-confirm": {
+		"title": "Sysupgrade Confirm",
+		"order": 81,
+		"action": {
+			"type": "view",
+			"path": "sysupgrade-confirm"
+		},
+		"depends": {
+			"acl": [ "luci-app-sysupgrade-confirm" ]
+		}
+	}
+}
