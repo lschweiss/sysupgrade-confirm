@@ -1,4 +1,4 @@
-#!/bin/sh /etc/init.d/sysupgrade-confirm
+#!/bin/sh /etc/rc.common
 # SPDX-License-Identifier: GPL-2.0-or-later
 # procd wrapper: starts the revert-countdown daemon on boot when a pending
 # (unconfirmed) sysupgrade exists. START=15: as early as procd allows, so the

@@ -18,6 +18,9 @@ sysupgrade-confirm)
 	fi
 	[ -f /lib/upgrade/keep.d/sysupgrade-confirm ] || exit 1
 	[ -x /usr/libexec/rpcd/sysupgrade-confirm ] || exit 1
+	# the init must run under rc.common, or procd never starts the revert
+	# daemon at boot (0.1.0 named itself as the interpreter)
+	head -n 1 /etc/init.d/sysupgrade-confirm | grep -qx '#!/bin/sh /etc/rc.common' || exit 1
 	echo "OK"
 	;;
 esac

@@ -22,4 +22,8 @@ jobs:
         run: |
           find . -name '*.json' -print0 | xargs -0 -n1 python3 -m json.tool > /dev/null
       - name: init script sanity
-        run: sh -n sysupgrade-confirm/files/sysupgrade-confirm.init
+        run: |
+          sh -n sysupgrade-confirm/files/sysupgrade-confirm.init
+          # procd only runs an init whose interpreter is rc.common; any other
+          # first line parses fine and silently never starts the daemon
+          head -n 1 sysupgrade-confirm/files/sysupgrade-confirm.init | grep -qx '#!/bin/sh /etc/rc.common'
